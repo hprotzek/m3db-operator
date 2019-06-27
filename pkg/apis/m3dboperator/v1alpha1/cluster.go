@@ -200,6 +200,10 @@ type ClusterSpec struct {
 	// +optional
 	KeepEtcdDataOnDelete bool `json:"keepEtcdDataOnDelete,omitempty"`
 
+	// EnableCarbonIngester enables the listener port for the carbon ingester
+	// +optional
+	EnableCarbonIngester bool `json:"enableCarbonIngester,omitempty"`
+
 	// ConfigMapName specifies the ConfigMap to use for this cluster. If unset a
 	// default configmap with template variables for etcd endpoints will be used.
 	// See "Configuring M3DB" in the docs for more.
@@ -237,6 +241,8 @@ type ClusterSpec struct {
 	// Annotations sets the base annotations that will be applied to resources created by
 	// the cluster.
 	Annotations map[string]string `json:"annotations,omitempty" yaml:"annotations"`
+
+	PodAnnotations map[string]string `json:"podAnnotations,omitempty" yaml:"podAnnotations"`
 
 	// Tolerations sets the tolerations that will be applied to all M3DB pods.
 	// +optional

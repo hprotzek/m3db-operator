@@ -107,6 +107,13 @@ func (in *ClusterSpec) DeepCopyInto(out *ClusterSpec) {
 			(*out)[key] = val
 		}
 	}
+	if in.PodAnnotations != nil {
+		in, out := &in.PodAnnotations, &out.PodAnnotations
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.Tolerations != nil {
 		in, out := &in.Tolerations, &out.Tolerations
 		*out = make([]v1.Toleration, len(*in))

@@ -109,6 +109,7 @@ func NewBaseStatefulSet(ssName, isolationGroup string, cluster *myspec.M3DBClust
 			Template: v1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: objLabels,
+					Annotations: cluster.Spec.PodAnnotations,
 				},
 				Spec: v1.PodSpec{
 					PriorityClassName: cluster.Spec.PriorityClassName,
