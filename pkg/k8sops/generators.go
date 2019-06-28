@@ -82,8 +82,6 @@ var baseCoordinatorPorts = [...]m3dbPort{
 	{"coord-metrics", PortM3CoordinatorMetrics, v1.ProtocolTCP},
 }
 
-var carbonListenerPort = m3dbPort{"coord-carbon", PortM3CoordinatorCarbon, v1.ProtocolTCP}
-
 // GenerateCRD generates the crd object needed for the M3DBCluster
 func GenerateCRD(enableValidation bool) *apiextensionsv1beta1.CustomResourceDefinition {
 	crd := &apiextensionsv1beta1.CustomResourceDefinition{
@@ -255,29 +253,17 @@ func buildServicePorts(ports []m3dbPort) []v1.ServicePort {
 }
 
 func generateM3DBServicePorts(cluster *myspec.M3DBCluster) []v1.ServicePort {
-	ports := baseM3DBPorts[:]
-	if cluster.Spec.EnableCarbonIngester {
-		ports = append(ports, carbonListenerPort)
-	}
-	return buildServicePorts(ports)
+	return buildServicePorts(baseM3DBPorts[:])
 }
 
 func generateCoordinatorServicePorts(cluster *myspec.M3DBCluster) []v1.ServicePort {
-	ports := baseCoordinatorPorts[:]
-	if cluster.Spec.EnableCarbonIngester {
-		ports = append(ports, carbonListenerPort)
-	}
-	return buildServicePorts(ports)
+	return buildServicePorts(baseCoordinatorPorts[:])
 }
 
 // generateContainerPorts will produce default container ports.
 func generateContainerPorts(cluster *myspec.M3DBCluster) []v1.ContainerPort {
 	cntPorts := []v1.ContainerPort{}
-	basePorts := baseM3DBPorts[:]
-	if cluster.Spec.EnableCarbonIngester {
-		basePorts = append(basePorts, carbonListenerPort)
-	}
-	for _, v := range basePorts {
+	for _, v := range baseM3DBPorts[:] {
 		newPortMapping := v1.ContainerPort{
 			Name:          v.name,
 			ContainerPort: int32(v.port),

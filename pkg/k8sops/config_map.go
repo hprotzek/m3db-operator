@@ -78,13 +78,10 @@ func GenerateDefaultConfigMap(cluster *myspec.M3DBCluster) (*corev1.ConfigMap, e
 	config := &configData{
 		Env:       DefaultM3ClusterEnvironmentName(cluster),
 		Endpoints: cluster.Spec.EtcdEndpoints,
-		CarbonIngester: cluster.Spec.EnableCarbonIngester,
 	}
 
 	buf := &bytes.Buffer{}
-	if err:= tmpl.Execute(buf, &config); err != nil {
-		return nil, err
-	}
+	tmpl.Execute(buf, &config);
 
 	ownerRef := GenerateOwnerRef(cluster)
 
